@@ -5,6 +5,7 @@ export type TrackedPerson = {
   box: BoundingBox;
   firstSeenMs: number;
   lastSeenMs: number;
+  mouthOpenness: number;
 };
 
 export type Tracker = {
@@ -43,6 +44,7 @@ export function createTracker(): Tracker {
         const t = tracks[p.trackIdx];
         t.box = detections[p.detIdx].box;
         t.lastSeenMs = timestampMs;
+        t.mouthOpenness = detections[p.detIdx].mouthOpenness;
         visible.push(t);
       }
 
@@ -54,6 +56,7 @@ export function createTracker(): Tracker {
           box: detections[di].box,
           firstSeenMs: timestampMs,
           lastSeenMs: timestampMs,
+          mouthOpenness: detections[di].mouthOpenness,
         };
         tracks.push(t);
         visible.push(t);
