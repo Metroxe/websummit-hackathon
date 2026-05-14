@@ -1,7 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { createDetector, type Detection, type Detector } from '../lib/detector';
-import { createTracker, type Tracker, type TrackedPerson } from '../lib/tracker';
-import { createCategorizer, type Categorizer } from '../lib/categorizer';
 import type { CategoryCounts } from './Hud';
 import './CameraView.css';
 
@@ -23,8 +21,6 @@ export function CameraView({ onError, onCountsChange }: CameraViewProps) {
     let rafId = 0;
     let cancelled = false;
     let detector: Detector | null = null;
-    let tracker: Tracker | null = null;
-    let categorizer: Categorizer | null = null;
 
     const start = async () => {
       try {
@@ -44,8 +40,6 @@ export function CameraView({ onError, onCountsChange }: CameraViewProps) {
         canvas.height = video.videoHeight;
 
         detector = await createDetector();
-        tracker = createTracker();
-        categorizer = createCategorizer();
 
         const ctx = canvas.getContext('2d');
         if (!ctx) {
@@ -53,27 +47,20 @@ export function CameraView({ onError, onCountsChange }: CameraViewProps) {
           return;
         }
 
+        onCountsChange({ walkedBy: 0, looked: 0, talked: 0 });
+
         const loop = async () => {
           if (cancelled) return;
 
           let detections: Detection[] = [];
-          let tracked: TrackedPerson[] = [];
           try {
             detections = (await detector?.detect(video, performance.now())) ?? [];
-            tracked = tracker?.update(detections, performance.now()) ?? [];
-            const counts = categorizer?.update(tracked, performance.now()) ?? {
-              walkedBy: 0,
-              looked: 0,
-              talked: 0,
-            };
-            onCountsChange(counts);
           } catch (err) {
-            // Detection errors per-frame are non-fatal; surface them in console.
             // eslint-disable-next-line no-console
             console.warn('detection frame failed', err);
           }
 
-          drawOverlay(ctx, canvas, tracked.length ? tracked : detections);
+          drawOverlay(ctx, canvas, detections);
           rafId = requestAnimationFrame(loop);
         };
 
@@ -110,26 +97,13 @@ export function CameraView({ onError, onCountsChange }: CameraViewProps) {
 function drawOverlay(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
-  items: Array<Detection | TrackedPerson>,
+  detections: Detection[],
 ) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.lineWidth = 3;
-  ctx.font = '16px system-ui, sans-serif';
-  ctx.textBaseline = 'top';
+  ctx.strokeStyle = '#ffffff';
 
-  for (const item of items) {
-    const color = 'color' in item && item.color ? item.color : '#ffffff';
-    const label = 'id' in item ? `#${item.id}` : '';
-    const { x, y, width, height } = item.box;
-
-    ctx.strokeStyle = color;
-    ctx.strokeRect(x, y, width, height);
-
-    if (label) {
-      ctx.fillStyle = color;
-      ctx.fillRect(x, y - 20, ctx.measureText(label).width + 8, 20);
-      ctx.fillStyle = '#000';
-      ctx.fillText(label, x + 4, y - 18);
-    }
+  for (const { box } of detections) {
+    ctx.strokeRect(box.x, box.y, box.width, box.height);
   }
 }
