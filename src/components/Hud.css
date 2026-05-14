@@ -1,0 +1,39 @@
+.hud {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  border-radius: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.hud__counter {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 11rem;
+}
+
+.hud__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.hud__label {
+  color: #d6d6d6;
+  font-size: 0.95rem;
+}
+
+.hud__value {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #ffffff;
+}

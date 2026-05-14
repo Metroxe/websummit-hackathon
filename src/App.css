@@ -1,0 +1,49 @@
+.app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.start-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+}
+
+.start-screen h1 {
+  margin: 0;
+  font-size: 2.25rem;
+  letter-spacing: -0.02em;
+}
+
+.start-screen p {
+  margin: 0;
+  color: #9a9a9a;
+}
+
+.start-button {
+  margin-top: 1rem;
+  padding: 0.85rem 1.75rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  background: #4f8cff;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  transition: background 120ms ease;
+}
+
+.start-button:hover {
+  background: #3d76e0;
+}
+
+.error {
+  color: #ff6b6b;
+  max-width: 28rem;
+}
