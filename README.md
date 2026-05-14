@@ -66,7 +66,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser. Allow webcam access. Stand in front of the camera, and start talking! 
+Open `http://localhost:5173/websummit-hackathon/` in your browser. Allow webcam access. Stand in front of the camera, and start talking!
 
 ---
 
