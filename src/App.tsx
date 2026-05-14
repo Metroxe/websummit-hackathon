@@ -4,7 +4,6 @@ import { Hud, type CategoryCounts } from './components/Hud';
 import { EventLog, type LogEvent } from './components/EventLog';
 import { InfoModal } from './components/InfoModal';
 import type { Category } from './lib/categorizer';
-import './App.css';
 
 const MAX_LOG_EVENTS = 40;
 
@@ -50,26 +49,33 @@ export function App() {
   }, []);
 
   return (
-    <div className="app">
+    <div className="relative h-full w-full overflow-hidden bg-bg text-ink">
       <CameraView onError={handleCameraError} onFrame={handleFrame} />
       <Hud counts={counts} />
       <EventLog events={events} />
 
       <button
         type="button"
-        className="info-button"
-        aria-label="About PassBy"
+        aria-label="About Passby"
         onClick={() => setShowInfo(true)}
+        className="absolute bottom-6 left-6 z-30 inline-flex items-center gap-2 rounded-full bg-surface px-4 py-2 font-mono text-[11px] uppercase tracking-label text-ink hover:bg-bg"
       >
-        ?
+        About
       </button>
 
       <InfoModal open={showInfo} onClose={() => setShowInfo(false)} />
 
       {error && (
-        <div className="camera-error" role="alert">
-          <strong>Camera error</strong>
-          <span>{error}</span>
+        <div
+          role="alert"
+          className="absolute bottom-6 right-6 z-30 flex max-w-sm flex-col gap-1 rounded-card bg-surface p-4 text-ink"
+        >
+          <span className="font-mono text-[11px] uppercase tracking-label text-muted">
+            Camera error
+          </span>
+          <span className="font-display text-sm text-ink leading-snug">
+            {error}
+          </span>
         </div>
       )}
     </div>

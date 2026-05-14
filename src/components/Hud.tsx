@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import './Hud.css';
 
 export type CategoryCounts = {
   walkedBy: number;
@@ -15,49 +14,48 @@ const TICK_DURATION_MS = 450;
 export function Hud({ counts }: HudProps) {
   const total = counts.walkedBy + counts.engaged;
   const engagementRate = total > 0 ? (counts.engaged / total) * 100 : 0;
-
   const walkedPct = total > 0 ? (counts.walkedBy / total) * 100 : 0;
   const engagedPct = total > 0 ? (counts.engaged / total) * 100 : 0;
 
   return (
-    <div className="hud">
-      <div className="hud__row hud__row--top">
-        <div className="hud__brand">
-          <span className="hud__brand-lights" aria-hidden>
-            <span className="hud__brand-light hud__brand-light--grey" />
-            <span className="hud__brand-light hud__brand-light--green" />
+    <div className="pointer-events-none absolute top-6 right-6 z-20 w-[20rem] rounded-card bg-ink text-bg p-8 flex flex-col gap-8 tabular-nums border border-zinc-800">
+      <div className="flex items-center justify-between">
+        <span className="font-display font-bold tracking-tightest text-bg text-base">
+          Passby
+        </span>
+        <span className="font-mono text-[11px] uppercase tracking-label text-zinc-400">
+          Live
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <span className="font-mono text-xs uppercase tracking-label text-zinc-400">
+          Engagement rate
+        </span>
+        <div className="flex items-baseline gap-2 font-display font-bold tracking-tightest leading-none">
+          <span className="text-6xl">
+            <AnimatedNumber value={engagementRate} decimals={1} />
           </span>
-          <span className="hud__brand-name">PassBy</span>
+          <span className="text-3xl text-zinc-400">%</span>
         </div>
-        <div className="hud__live">
-          <span className="hud__live-dot" />
-          LIVE
-        </div>
+        <p className="font-display text-sm text-zinc-400 leading-snug">
+          <AnimatedNumber value={counts.engaged} /> of{' '}
+          <AnimatedNumber value={total} /> passersby engaged
+        </p>
       </div>
 
-      <div className="hud__hero">
-        <div className="hud__hero-label">Engagement rate</div>
-        <div className="hud__hero-value">
-          <AnimatedNumber value={engagementRate} decimals={1} />
-          <span className="hud__hero-unit">%</span>
-        </div>
-        <div className="hud__hero-sub">
-          <AnimatedNumber value={counts.engaged} /> of <AnimatedNumber value={total} /> passersby engaged
-        </div>
-      </div>
-
-      <div className="hud__funnel">
+      <div className="flex flex-col gap-5 border-t border-zinc-800 pt-6">
         <FunnelRow
           label="Walked by"
           value={counts.walkedBy}
           pct={walkedPct}
-          color="grey"
+          tone="muted"
         />
         <FunnelRow
           label="Engaged"
           value={counts.engaged}
           pct={engagedPct}
-          color="green"
+          tone="primary"
         />
       </div>
     </div>
@@ -68,34 +66,28 @@ type FunnelRowProps = {
   label: string;
   value: number;
   pct: number;
-  color: 'grey' | 'green';
+  tone: 'muted' | 'primary';
 };
 
-function FunnelRow({ label, value, pct, color }: FunnelRowProps) {
-  const prev = useRef(value);
-  const [flash, setFlash] = useState(false);
-
-  useEffect(() => {
-    if (value !== prev.current) {
-      prev.current = value;
-      setFlash(true);
-      const t = setTimeout(() => setFlash(false), 600);
-      return () => clearTimeout(t);
-    }
-  }, [value]);
+function FunnelRow({ label, value, pct, tone }: FunnelRowProps) {
+  const valueColor = tone === 'primary' ? 'text-bg' : 'text-zinc-400';
+  const barFill = tone === 'primary' ? 'bg-bg' : 'bg-zinc-600';
 
   return (
-    <div className={`funnel ${flash ? 'funnel--flash' : ''}`}>
-      <div className="funnel__head">
-        <span className={`funnel__swatch funnel__swatch--${color}`} />
-        <span className="funnel__label">{label}</span>
-        <span className="funnel__value">
+    <div className="flex flex-col gap-2">
+      <div className="flex items-baseline justify-between">
+        <span className="font-mono text-[11px] uppercase tracking-label text-zinc-400">
+          {label}
+        </span>
+        <span
+          className={`font-display text-xl font-semibold tracking-tightest ${valueColor}`}
+        >
           <AnimatedNumber value={value} />
         </span>
       </div>
-      <div className="funnel__bar">
+      <div className="h-px bg-zinc-800 relative overflow-hidden">
         <div
-          className={`funnel__bar-fill funnel__bar-fill--${color}`}
+          className={`absolute inset-y-0 left-0 ${barFill} transition-[width] duration-500 ease-out`}
           style={{ width: `${pct}%` }}
         />
       </div>

@@ -1,24 +1,30 @@
-:root {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  color-scheme: dark;
-  color: #eaeaea;
-  background: #0b0b0d;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-* {
-  box-sizing: border-box;
-}
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    width: 100%;
+  }
 
-html,
-body,
-#root {
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-}
+  body {
+    margin: 0;
+    overflow: hidden;
+    background-color: theme('colors.bg');
+    color: theme('colors.ink');
+    font-family: theme('fontFamily.sans');
+    -webkit-font-smoothing: antialiased;
+  }
 
-button {
-  font: inherit;
-  cursor: pointer;
+  * {
+    box-sizing: border-box;
+  }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+  }
 }

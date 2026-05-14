@@ -3,9 +3,11 @@ import type { CategoryCounts } from '../components/Hud';
 
 export type Category = 'walked-by' | 'engaged';
 
+// Overlay sits on top of the live camera (dark), so we map the design tokens
+// to their dark-mode inversions: muted = zinc-400, ink = near-white.
 export const CATEGORY_COLORS: Record<Category, string> = {
-  'walked-by': '#9a9a9a',
-  engaged: '#4caf50',
+  'walked-by': '#A1A1AA',
+  engaged: '#FAFAFA',
 };
 
 export type CategorizerResult = {
