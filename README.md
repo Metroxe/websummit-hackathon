@@ -4,6 +4,11 @@
   <p><strong>Transform any laptop into a smart booth engagement tracker.</strong></p>
   <p><i>Built for Hackathons. Powered by Edge AI. 100% Privacy-Preserving.</i></p>
   
+  <p>
+    <strong><a href="https://metroxe.github.io/websummit-hackathon/">🔴 Try the Live Demo</a></strong> | 
+    <strong><a href="https://youtu.be/Lt1G3LELPd8">📺 Watch the Presentation</a></strong>
+  </p>
+
   [![React](https://img.shields.io/badge/React-18-blue.svg?style=for-the-badge&logo=react)](https://reactjs.org/)
   [![Vite](https://img.shields.io/badge/Vite-5-purple.svg?style=for-the-badge&logo=vite)](https://vitejs.dev/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
