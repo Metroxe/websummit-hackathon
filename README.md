@@ -8,6 +8,11 @@
   [![Vite](https://img.shields.io/badge/Vite-5-purple.svg?style=for-the-badge&logo=vite)](https://vitejs.dev/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
   [![MediaPipe](https://img.shields.io/badge/MediaPipe-Tasks_Vision-orange.svg?style=for-the-badge)](https://developers.google.com/mediapipe)
+
+  <br />
+  <br />
+
+  <img src="./demo-gifs/demo_1.gif" alt="PassBy Analytics in Action" width="80%" />
 </div>
 
 <br />
@@ -21,7 +26,7 @@ Enter **PassBy Analytics**.
 PassBy is a lightweight, zero-setup computer vision application. You open a website on your laptop, point your webcam at the crowd, and our Edge AI instantly categorizes the crowd into **Passersby** and **Engaged Leads** based on *mouth movement*. If they are talking and asking questions, you'll know!
 
 <div align="center">
-  <img src="./demo-gifs/demo_1.gif" alt="PassBy Analytics in Action" width="80%" />
+  <img src="./demo-gifs/demo_2.gif" alt="Lip-Reading Engagement Detection" width="80%" />
 </div>
 
 ## ✨ Features That Wow
@@ -34,7 +39,7 @@ PassBy is a lightweight, zero-setup computer vision application. You open a webs
 <br />
 
 <div align="center">
-  <img src="./demo-gifs/demo_2.gif" alt="Lip-Reading Engagement Detection" width="80%" />
+  <img src="./demo-gifs/demo_3.gif" alt="Under The Hood - Tracking Pipeline" width="80%" />
 </div>
 
 ## 🛠️ How We Built It Under The Hood
@@ -44,11 +49,6 @@ The secret sauce is in how we combine tracking and facial landmarks:
 2.  **Facial Correlation:** We detect faces and calculate an algorithmic `mouthOpenness` score (distance between lips divided by face height, ensuring accuracy from 1 foot or 10 feet away).
 3.  **State Management:** We map the Face ID back to the Body ID using bounding-box intersection. If the `mouthOpenness` score rapidly fluctuates above `0.05` for 5 consecutive frames, our categorizer promotes that person from `PASSING` to `ENGAGED`.
 
-<br />
-
-<div align="center">
-  <img src="./demo-gifs/demo_3.gif" alt="Under The Hood - Tracking Pipeline" width="80%" />
-</div>
 
 ## 💻 Run It Locally (In 60 Seconds)
 
