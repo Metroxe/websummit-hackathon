@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { createDetector, type Detection, type Detector } from '../lib/detector';
+import { createTracker, type TrackedPerson, type Tracker } from '../lib/tracker';
 import type { CategoryCounts } from './Hud';
 import './CameraView.css';
 
@@ -21,6 +22,7 @@ export function CameraView({ onError, onCountsChange }: CameraViewProps) {
     let rafId = 0;
     let cancelled = false;
     let detector: Detector | null = null;
+    let tracker: Tracker | null = null;
 
     const start = async () => {
       try {
@@ -40,6 +42,7 @@ export function CameraView({ onError, onCountsChange }: CameraViewProps) {
         canvas.height = video.videoHeight;
 
         detector = await createDetector();
+        tracker = createTracker();
 
         const ctx = canvas.getContext('2d');
         if (!ctx) {
@@ -52,15 +55,17 @@ export function CameraView({ onError, onCountsChange }: CameraViewProps) {
         const loop = async () => {
           if (cancelled) return;
 
-          let detections: Detection[] = [];
+          let tracked: TrackedPerson[] = [];
           try {
-            detections = (await detector?.detect(video, performance.now())) ?? [];
+            const now = performance.now();
+            const detections: Detection[] = (await detector?.detect(video, now)) ?? [];
+            tracked = tracker?.update(detections, now) ?? [];
           } catch (err) {
             // eslint-disable-next-line no-console
             console.warn('detection frame failed', err);
           }
 
-          drawOverlay(ctx, canvas, detections);
+          drawOverlay(ctx, canvas, tracked);
           rafId = requestAnimationFrame(loop);
         };
 
@@ -97,13 +102,27 @@ export function CameraView({ onError, onCountsChange }: CameraViewProps) {
 function drawOverlay(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
-  detections: Detection[],
+  tracked: TrackedPerson[],
 ) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.lineWidth = 3;
-  ctx.strokeStyle = '#ffffff';
+  ctx.font = 'bold 18px system-ui, sans-serif';
+  ctx.textBaseline = 'top';
 
-  for (const { box } of detections) {
+  for (const { id, box, color } of tracked) {
+    ctx.strokeStyle = color;
     ctx.strokeRect(box.x, box.y, box.width, box.height);
+
+    const label = `#${id}`;
+    const padding = 6;
+    const labelWidth = ctx.measureText(label).width + padding * 2;
+    const labelHeight = 22;
+    const labelX = box.x;
+    const labelY = box.y - labelHeight - 2;
+
+    ctx.fillStyle = color;
+    ctx.fillRect(labelX, labelY, labelWidth, labelHeight);
+    ctx.fillStyle = '#000000';
+    ctx.fillText(label, labelX + padding, labelY + 3);
   }
 }
