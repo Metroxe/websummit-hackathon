@@ -3,7 +3,6 @@ import type { BoundingBox, Detection } from './detector';
 export type TrackedPerson = {
   id: number;
   box: BoundingBox;
-  color: string;
   firstSeenMs: number;
   lastSeenMs: number;
 };
@@ -11,15 +10,6 @@ export type TrackedPerson = {
 export type Tracker = {
   update: (detections: Detection[], timestampMs: number) => TrackedPerson[];
 };
-
-const PALETTE = [
-  '#ff6b6b', '#4ecdc4', '#ffe66d', '#a78bfa', '#f472b6',
-  '#34d399', '#60a5fa', '#fb923c', '#f87171', '#22d3ee',
-];
-
-export function colorForId(id: number): string {
-  return PALETTE[id % PALETTE.length];
-}
 
 const IOU_THRESHOLD = 0.3;
 // Keep a track alive briefly through detection misses so the ID survives blinks.
@@ -62,7 +52,6 @@ export function createTracker(): Tracker {
         const t: TrackedPerson = {
           id,
           box: detections[di].box,
-          color: colorForId(id),
           firstSeenMs: timestampMs,
           lastSeenMs: timestampMs,
         };

@@ -1,6 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { createDetector, type Detection, type Detector } from '../lib/detector';
 import { createTracker, type TrackedPerson, type Tracker } from '../lib/tracker';
+import {
+  createCategorizer,
+  CATEGORY_COLORS,
+  type Category,
+  type Categorizer,
+} from '../lib/categorizer';
 import type { CategoryCounts } from './Hud';
 import './CameraView.css';
 
@@ -23,6 +29,7 @@ export function CameraView({ onError, onCountsChange }: CameraViewProps) {
     let cancelled = false;
     let detector: Detector | null = null;
     let tracker: Tracker | null = null;
+    let categorizer: Categorizer | null = null;
 
     const start = async () => {
       try {
@@ -43,6 +50,7 @@ export function CameraView({ onError, onCountsChange }: CameraViewProps) {
 
         detector = await createDetector();
         tracker = createTracker();
+        categorizer = createCategorizer();
 
         const ctx = canvas.getContext('2d');
         if (!ctx) {
@@ -56,16 +64,22 @@ export function CameraView({ onError, onCountsChange }: CameraViewProps) {
           if (cancelled) return;
 
           let tracked: TrackedPerson[] = [];
+          let categories = new Map<number, Category>();
           try {
             const now = performance.now();
             const detections: Detection[] = (await detector?.detect(video, now)) ?? [];
             tracked = tracker?.update(detections, now) ?? [];
+            const result = categorizer?.update(tracked, now);
+            if (result) {
+              categories = result.categories;
+              onCountsChange(result.counts);
+            }
           } catch (err) {
             // eslint-disable-next-line no-console
             console.warn('detection frame failed', err);
           }
 
-          drawOverlay(ctx, canvas, tracked);
+          drawOverlay(ctx, canvas, tracked, categories);
           rafId = requestAnimationFrame(loop);
         };
 
@@ -103,13 +117,16 @@ function drawOverlay(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   tracked: TrackedPerson[],
+  categories: Map<number, Category>,
 ) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.lineWidth = 3;
   ctx.font = 'bold 18px system-ui, sans-serif';
   ctx.textBaseline = 'top';
 
-  for (const { id, box, color } of tracked) {
+  for (const { id, box } of tracked) {
+    const category = categories.get(id) ?? 'walked-by';
+    const color = CATEGORY_COLORS[category];
     ctx.strokeStyle = color;
     ctx.strokeRect(box.x, box.y, box.width, box.height);
 
