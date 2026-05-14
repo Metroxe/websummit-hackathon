@@ -1,6 +1,6 @@
 <div align="center">
   <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnYydWhsMjQwc2h1OHJkNWVydDBla2h0ejAwaWRyd3NudjV0cjcxbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oz8xLd9j12k3pP1iM/giphy.gif" alt="AI Eyes" width="150" />
-  <h1>👁️ PassBy Analytics</h1>
+  <h1>&gt; PassBy Analytics_</h1>
   <p><strong>Transform any laptop into a smart booth engagement tracker.</strong></p>
   <p><i>Built for Hackathons. Powered by Edge AI. 100% Privacy-Preserving.</i></p>
   
