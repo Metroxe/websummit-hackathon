@@ -19,16 +19,12 @@ export type Categorizer = {
   update: (tracked: TrackedPerson[], timestampMs: number) => CategorizerResult;
 };
 
-// A person counts as "engaged" once their centroid has stayed within a small
-// radius for at least DWELL_TIME_MS. Tune both during the demo.
-const DWELL_RADIUS_PX = 80;
-const DWELL_TIME_MS = 5000;
-// Keep a bit more history than the dwell window so the check has a full span.
-const HISTORY_WINDOW_MS = DWELL_TIME_MS + 1000;
+// Keep a brief history of talking frames to smooth out detection.
+const HISTORY_WINDOW_MS = 2000;
 
 type TrackState = {
   category: Category;
-  history: Array<{ x: number; y: number; t: number }>;
+  talkingHistory: Array<{ openness: number; t: number }>;
 };
 
 export function createCategorizer(): Categorizer {
@@ -41,21 +37,21 @@ export function createCategorizer(): Categorizer {
       for (const person of tracked) {
         let state = states.get(person.id);
         if (!state) {
-          state = { category: 'walked-by', history: [] };
+          state = { category: 'walked-by', talkingHistory: [] };
           states.set(person.id, state);
         }
 
-        const cx = person.box.x + person.box.width / 2;
-        const cy = person.box.y + person.box.height / 2;
-        state.history.push({ x: cx, y: cy, t: timestampMs });
+        state.talkingHistory.push({ openness: person.mouthOpenness, t: timestampMs });
 
         const cutoff = timestampMs - HISTORY_WINDOW_MS;
-        while (state.history.length > 0 && state.history[0].t < cutoff) {
-          state.history.shift();
+        while (state.talkingHistory.length > 0 && state.talkingHistory[0].t < cutoff) {
+          state.talkingHistory.shift();
         }
 
-        if (state.category === 'walked-by' && hasDwelled(state.history, timestampMs)) {
-          state.category = 'engaged';
+        if (state.category === 'walked-by') {
+          if (hasTalked(state.talkingHistory)) {
+            state.category = 'engaged';
+          }
         }
 
         categories.set(person.id, state.category);
@@ -73,22 +69,16 @@ export function createCategorizer(): Categorizer {
   };
 }
 
-function hasDwelled(
-  history: Array<{ x: number; y: number; t: number }>,
-  now: number,
+function hasTalked(
+  talkingHistory: Array<{ openness: number; t: number }>,
 ): boolean {
-  if (history.length === 0) return false;
-  if (now - history[0].t < DWELL_TIME_MS) return false;
-
-  let minX = history[0].x;
-  let maxX = history[0].x;
-  let minY = history[0].y;
-  let maxY = history[0].y;
-  for (const p of history) {
-    if (p.x < minX) minX = p.x;
-    if (p.x > maxX) maxX = p.x;
-    if (p.y < minY) minY = p.y;
-    if (p.y > maxY) maxY = p.y;
+  if (talkingHistory.length === 0) return false;
+  // A simple threshold approach: if we see mouthOpenness > 0.05 a few times recently, they are talking.
+  let talkingFrames = 0;
+  for (const p of talkingHistory) {
+    if (p.openness > 0.05) talkingFrames++;
   }
-  return Math.hypot(maxX - minX, maxY - minY) <= DWELL_RADIUS_PX * 2;
+  // If we have at least 5 frames of talking, consider them engaged.
+  return talkingFrames >= 5;
 }
+
