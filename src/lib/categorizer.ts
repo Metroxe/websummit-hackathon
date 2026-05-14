@@ -3,11 +3,11 @@ import type { CategoryCounts } from '../components/Hud';
 
 export type Category = 'walked-by' | 'engaged';
 
-// Overlay sits on top of the live camera (dark), so we map the design tokens
-// to their dark-mode inversions: muted = zinc-400, ink = near-white.
+// Two-state palette: muted gray for "walked-by" passersby, vivid green for
+// "engaged" — the celebratory state of the app, kept as a deliberate accent.
 export const CATEGORY_COLORS: Record<Category, string> = {
   'walked-by': '#A1A1AA',
-  engaged: '#FAFAFA',
+  engaged: '#4ADE80',
 };
 
 export type CategorizerResult = {

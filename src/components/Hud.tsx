@@ -32,11 +32,11 @@ export function Hud({ counts }: HudProps) {
         <span className="font-mono text-xs uppercase tracking-label text-zinc-400">
           Engagement rate
         </span>
-        <div className="flex items-baseline gap-2 font-display font-bold tracking-tightest leading-none">
+        <div className="flex items-baseline gap-2 font-display font-bold tracking-tightest leading-none text-[#4ADE80]">
           <span className="text-6xl">
             <AnimatedNumber value={engagementRate} decimals={1} />
           </span>
-          <span className="text-3xl text-zinc-400">%</span>
+          <span className="text-3xl opacity-70">%</span>
         </div>
         <p className="font-display text-sm text-zinc-400 leading-snug">
           <AnimatedNumber value={counts.engaged} /> of{' '}
@@ -70,8 +70,8 @@ type FunnelRowProps = {
 };
 
 function FunnelRow({ label, value, pct, tone }: FunnelRowProps) {
-  const valueColor = tone === 'primary' ? 'text-bg' : 'text-zinc-400';
-  const barFill = tone === 'primary' ? 'bg-bg' : 'bg-zinc-600';
+  const valueColor = tone === 'primary' ? 'text-[#4ADE80]' : 'text-zinc-400';
+  const barFill = tone === 'primary' ? 'bg-[#4ADE80]' : 'bg-zinc-600';
 
   return (
     <div className="flex flex-col gap-2">

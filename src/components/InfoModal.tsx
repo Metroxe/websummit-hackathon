@@ -59,7 +59,8 @@ export function InfoModal({ open, onClose }: InfoModalProps) {
 
         <dl className="mt-8 grid grid-cols-1 gap-6 border-t border-line pt-8 md:grid-cols-2">
           <div className="flex flex-col gap-2">
-            <dt className="font-mono text-xs uppercase tracking-label text-muted">
+            <dt className="flex items-center gap-2 font-mono text-xs uppercase tracking-label text-muted">
+              <span className="inline-block h-2 w-2 rounded-full bg-[#A1A1AA]" />
               Walked by
             </dt>
             <dd className="font-display text-base text-ink leading-snug">
@@ -67,7 +68,8 @@ export function InfoModal({ open, onClose }: InfoModalProps) {
             </dd>
           </div>
           <div className="flex flex-col gap-2">
-            <dt className="font-mono text-xs uppercase tracking-label text-muted">
+            <dt className="flex items-center gap-2 font-mono text-xs uppercase tracking-label text-muted">
+              <span className="inline-block h-2 w-2 rounded-full bg-[#4ADE80]" />
               Engaged
             </dt>
             <dd className="font-display text-base text-ink leading-snug">
@@ -76,7 +78,15 @@ export function InfoModal({ open, onClose }: InfoModalProps) {
           </div>
         </dl>
 
-        <div className="mt-8 flex justify-end">
+        <div className="mt-8 flex items-center justify-between gap-4">
+          <a
+            href="https://github.com/Metroxe/websummit-hackathon"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-xs uppercase tracking-label text-muted underline-offset-4 hover:text-ink hover:underline"
+          >
+            github.com/Metroxe/websummit-hackathon ↗
+          </a>
           <button
             type="button"
             onClick={onClose}

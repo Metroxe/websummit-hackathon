@@ -19,7 +19,7 @@ const SHORT_LABEL: Record<Category, string> = {
 
 const TONE: Record<Category, string> = {
   'walked-by': 'text-zinc-400',
-  engaged: 'text-bg',
+  engaged: 'text-[#4ADE80]',
 };
 
 export function EventLog({ events }: EventLogProps) {
