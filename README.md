@@ -1,6 +1,5 @@
 <div align="center">
   <h1>&gt; PassBy Analytics_</h1>
-  <p><i>Built for Hackathons. Powered by Edge AI. 100% Privacy-Preserving.</i></p>
   
   <p>
     <strong><a href="https://metroxe.github.io/websummit-hackathon/">🔴 Try the Live Demo</a></strong> | 
