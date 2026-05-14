@@ -26,6 +26,7 @@ type DisplayedTrack = {
   target: { x: number; y: number; width: number; height: number };
   firstSeenMs: number;
   lastSeenMs: number;
+  mouthOpenness: number;
 };
 
 // How aggressively the on-screen box chases the latest detection per rAF.
@@ -107,6 +108,7 @@ export function CameraView({ onError, onFrame }: CameraViewProps) {
               if (prev) {
                 prev.target = t.box;
                 prev.lastSeenMs = t.lastSeenMs;
+                prev.mouthOpenness = t.mouthOpenness;
               } else {
                 displayed.set(t.id, {
                   id: t.id,
@@ -114,6 +116,7 @@ export function CameraView({ onError, onFrame }: CameraViewProps) {
                   target: t.box,
                   firstSeenMs: t.firstSeenMs,
                   lastSeenMs: t.lastSeenMs,
+                  mouthOpenness: t.mouthOpenness,
                 });
               }
             }
@@ -144,6 +147,7 @@ export function CameraView({ onError, onFrame }: CameraViewProps) {
               box: d.box,
               firstSeenMs: d.firstSeenMs,
               lastSeenMs: d.lastSeenMs,
+              mouthOpenness: d.mouthOpenness,
             });
           }
 
