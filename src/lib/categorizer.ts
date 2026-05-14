@@ -1,12 +1,11 @@
 import type { TrackedPerson } from './tracker';
 import type { CategoryCounts } from '../components/Hud';
 
-export type Category = 'walked-by' | 'looked' | 'talked';
+export type Category = 'walked-by' | 'engaged';
 
 export const CATEGORY_COLORS: Record<Category, string> = {
   'walked-by': '#9a9a9a',
-  looked: '#f5c84a',
-  talked: '#4caf50',
+  engaged: '#4caf50',
 };
 
 export type CategorizerResult = {
@@ -18,7 +17,7 @@ export type Categorizer = {
   update: (tracked: TrackedPerson[], timestampMs: number) => CategorizerResult;
 };
 
-// A person counts as "talked" once their centroid has stayed within a small
+// A person counts as "engaged" once their centroid has stayed within a small
 // radius for at least DWELL_TIME_MS. Tune both during the demo.
 const DWELL_RADIUS_PX = 80;
 const DWELL_TIME_MS = 5000;
@@ -53,23 +52,21 @@ export function createCategorizer(): Categorizer {
           state.history.shift();
         }
 
-        if (state.category !== 'talked' && hasDwelled(state.history, timestampMs)) {
-          state.category = 'talked';
+        if (state.category === 'walked-by' && hasDwelled(state.history, timestampMs)) {
+          state.category = 'engaged';
         }
 
         categories.set(person.id, state.category);
       }
 
       let walkedBy = 0;
-      let looked = 0;
-      let talked = 0;
+      let engaged = 0;
       for (const state of states.values()) {
-        if (state.category === 'talked') talked++;
-        else if (state.category === 'looked') looked++;
+        if (state.category === 'engaged') engaged++;
         else walkedBy++;
       }
 
-      return { counts: { walkedBy, looked, talked }, categories };
+      return { counts: { walkedBy, engaged }, categories };
     },
   };
 }
