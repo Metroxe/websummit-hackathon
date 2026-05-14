@@ -20,6 +20,10 @@ Enter **PassBy Analytics**.
 
 PassBy is a lightweight, zero-setup computer vision application. You open a website on your laptop, point your webcam at the crowd, and our Edge AI instantly categorizes the crowd into **Passersby** and **Engaged Leads** based on *mouth movement*. If they are talking and asking questions, you'll know!
 
+<div align="center">
+  <img src="./demo-gifs/demo_1.gif" alt="PassBy Analytics in Action" width="80%" />
+</div>
+
 ## ✨ Features That Wow
 
 *   **🗣️ Lip-Reading Engagement:** We don't just track bodies. We use Google's `FaceLandmarker` 468-point 3D face mesh to track the exact vertical distance between the upper and lower lips. If someone's mouth is moving, we instantly flag them as an active, engaged lead!
@@ -27,12 +31,24 @@ PassBy is a lightweight, zero-setup computer vision application. You open a webs
 *   **🔒 Absolute Privacy:** Because the AI runs entirely in the browser's memory, no images or video feeds are *ever* sent to a server. What happens at the booth stays at the booth.
 *   **🎯 Zero Hardware:** Forget expensive LiDAR sensors or infrared cameras. If you have a laptop with a webcam, you have a smart analytics dashboard.
 
+<br />
+
+<div align="center">
+  <img src="./demo-gifs/demo_2.gif" alt="Lip-Reading Engagement Detection" width="80%" />
+</div>
+
 ## 🛠️ How We Built It Under The Hood
 
 The secret sauce is in how we combine tracking and facial landmarks:
 1.  **Body Tracking:** We draw a bounding box around everyone in frame.
 2.  **Facial Correlation:** We detect faces and calculate an algorithmic `mouthOpenness` score (distance between lips divided by face height, ensuring accuracy from 1 foot or 10 feet away).
 3.  **State Management:** We map the Face ID back to the Body ID using bounding-box intersection. If the `mouthOpenness` score rapidly fluctuates above `0.05` for 5 consecutive frames, our categorizer promotes that person from `PASSING` to `ENGAGED`.
+
+<br />
+
+<div align="center">
+  <img src="./demo-gifs/demo_3.gif" alt="Under The Hood - Tracking Pipeline" width="80%" />
+</div>
 
 ## 💻 Run It Locally (In 60 Seconds)
 
