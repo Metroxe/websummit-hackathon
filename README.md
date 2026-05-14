@@ -17,7 +17,7 @@
   <br />
   <br />
 
-  <img src="./demo-gifs/demo_1.gif" alt="PassBy Analytics in Action" width="80%" />
+  <img src="./demo-gifs/demo_2.gif" alt="Lip-Reading Engagement Detection" width="80%" />
 </div>
 
 <br />
@@ -31,7 +31,7 @@ Enter **PassBy Analytics**.
 PassBy is a lightweight, zero-setup computer vision application. You open a website on your laptop, point your webcam at the crowd, and our Edge AI instantly categorizes the crowd into **Passersby** and **Engaged Leads** based on *mouth movement*. If they are talking and asking questions, you'll know!
 
 <div align="center">
-  <img src="./demo-gifs/demo_2.gif" alt="Lip-Reading Engagement Detection" width="80%" />
+  <img src="./demo-gifs/demo_1.gif" alt="PassBy Analytics in Action" width="80%" />
 </div>
 
 ## ✨ Features That Wow
