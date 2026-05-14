@@ -68,6 +68,11 @@ npm run dev
 
 Open `http://localhost:5173/websummit-hackathon/` in your browser. Allow webcam access. Stand in front of the camera, and start talking!
 
+## 📊 Presentation
+
+Check out our full pitch deck and presentation here:
+[https://github.com/JERRYJURR/hackathon-presentation](https://github.com/JERRYJURR/hackathon-presentation)
+
 ---
 
 <div align="center">
