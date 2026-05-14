@@ -71,14 +71,10 @@ export function InfoModal({ open, onClose }: InfoModalProps) {
               Engaged
             </dt>
             <dd className="font-display text-base text-ink leading-snug">
-              Lingered in front of the booth for a few seconds.
+              Mouth movement detected — caught mid-conversation at the booth.
             </dd>
           </div>
         </dl>
-
-        <p className="mt-8 font-mono text-xs uppercase tracking-label text-muted">
-          Runs in browser · No video leaves the device
-        </p>
 
         <div className="mt-8 flex justify-end">
           <button
